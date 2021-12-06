@@ -3,17 +3,7 @@ local MinigameFinished = false
 local MinigameFailed = false
 local MinigameCB = {}
 
-QBCore = nil
-
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(10)
-        if QBCore == nil then
-            TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
-            Citizen.Wait(200)
-        end
-    end
-end)
+local QBCore = exports['qb-core']:GetCoreObject()
 
 RegisterCommand('chimpminigame', function(source, args)
     local time = tonumber(args[1])
@@ -44,9 +34,9 @@ AddEventHandler('doom-chimp:start', function(time, startLevel, endLevel, cb)
         SetNuiFocus(true, true)
         SetNuiFocusKeepInput(false)
 
-        Citizen.CreateThread(function()
+        CreateThread(function()
             while MinigameStarted do
-                Citizen.Wait(7)
+                Wait(7)
                 if MinigameFinished then
                     if MinigameFailed then
                         cb(false)
